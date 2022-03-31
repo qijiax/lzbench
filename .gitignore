@@ -36,3 +36,7 @@ lzbench
 *~
 
 todo.txt
+
+# except for qpl lib
+!qpl/lib*/*
+
