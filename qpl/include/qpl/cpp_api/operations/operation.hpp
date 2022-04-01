@@ -27,6 +27,10 @@
 #if defined(__linux__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnon-virtual-dtor"
+#if !defined (__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+#endif
 #endif
 
 namespace qpl {
@@ -314,7 +318,7 @@ private:
     /**
      * @brief Stub that will be removed later
      */
-    void set_job_buffer(uint8_t *buffer) noexcept final {
+    void set_job_buffer(uint8_t * /* buffer */) noexcept final {
         // No job buffer is required with custom operations
     }
 };
@@ -618,6 +622,9 @@ auto get_library_version() -> const char *;
 
 #if defined(__linux__)
 #pragma GCC diagnostic pop
+#if !defined (__clang__)
+#pragma GCC diagnostic pop
+#endif
 #endif
 
 #endif // QPL_OPERATION_HPP

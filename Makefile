@@ -349,6 +349,9 @@ $(NVCOMP_CPP_OBJ): %.cpp.o: %.cpp
 	@$(MKDIR) $(dir $@)
 	$(CXX) $(CFLAGS) -c $< -o $@
 
+qpl/qpl_compress.o: %.o : %.cpp
+	$(CXX) $(CFLAGS) -std=gnu++2a $< -c -o $@
+
 # disable the implicit rule for making a binary out of a single object file
 %: %.o
 
