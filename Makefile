@@ -10,7 +10,7 @@ vpath wflz/wfLZ.h $(SOURCE_PATH)
 
 #BUILD_ARCH = 32-bit
 #BUILD_STATIC = 1
-BUILD_TYPE = debug
+# BUILD_TYPE = debug
 
 ifeq ($(BUILD_ARCH),32-bit)
 	CODE_FLAGS += -m32

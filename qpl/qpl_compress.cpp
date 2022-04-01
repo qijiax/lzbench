@@ -1,6 +1,4 @@
-#include <iostream>
 #include <string>
-#include <cstring>
 #include <unistd.h>
 #include "qpl_compress.h"
 #include "qpl/qpl.h"
