@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h> // memcpy
-#include <sys/time.h>
 
 #ifndef MAX
     #define MAX(a,b) ((a)>(b))?(a):(b)
@@ -1258,18 +1257,7 @@ int64_t lzbench_snappy_compress(char *inbuf, size_t insize, char *outbuf, size_t
 
 int64_t lzbench_snappy_decompress(char *inbuf, size_t insize, char *outbuf, size_t outsize, size_t, size_t, char*)
 {
-    static int time_all=0;
-    struct timeval start_time, end;
-    gettimeofday(&start_time,NULL);
-    snappy::RawUncompress(inbuf, insize, outbuf);
-    gettimeofday(&end,NULL);
-
-    FILE *fp=fopen("/mnt/test/lzbench_snappy.txt","a+");
-    time_all+=    ((end.tv_sec * 1000000 + end.tv_usec) -
-      (start_time.tv_sec * 1000000 + start_time.tv_usec));
-    fprintf(fp," Time taken to count to 10^5 is : %d micro seconds\n",time_all);
-    fclose(fp);
-
+	snappy::RawUncompress(inbuf, insize, outbuf);
 	return outsize;
 }
 
