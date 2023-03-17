@@ -216,7 +216,6 @@ static const compressor_desc_t comp_desc[LZBENCH_COMPRESSOR_COUNT] =
     { "nvcomp_lz4", "1.2.2",       0,   5,    0,       0, lzbench_nvcomp_compress,     lzbench_nvcomp_decompress,     lzbench_nvcomp_init,     lzbench_nvcomp_deinit },
     { "qpl",        "0.0.0",       0,   0,    1,   1<<20, lzbench_qpl_compress,        lzbench_qpl_decompress,        lzbench_qpl_init,        lzbench_qpl_deinit },
     { "qpl_sw",     "0.0.0",       0,   0,    2,       0, lzbench_qpl_compress,        lzbench_qpl_decompress,        lzbench_qpl_init,        lzbench_qpl_deinit },
-    { "qpl_hl",     "0.0.0",       0,   0,    1,   1<<20, lzbench_qpl_hl_compress,     lzbench_qpl_hl_decompress,     lzbench_qpl_hl_init,     NULL },
 };
 
 

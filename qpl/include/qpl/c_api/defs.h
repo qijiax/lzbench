@@ -40,8 +40,13 @@ extern "C" {
 #define UNREFERENCED_PARAMETER(p) p __attribute__((unused)) /**< Unreferenced parameter - warning removal */
 #else
 #define UNREFERENCED_PARAMETER(p) p                         /**< Unreferenced parameter - warning removal */
-#endif        
 #endif
+#endif
+
+/**
+ * Unused variables which might be used later - warning removal
+ */
+#define MAYBE_UNUSED(x) ((void)x)
 
 /**
  * Marker for the last enumerator of qpl_decomp_end_proc
@@ -60,7 +65,7 @@ extern "C" {
 
 
 /**
- * @name Flags
+ * @addtogroup QPL_FLAGS
  * @brief Use this enumeration to indicate various options when submitting a job.
  * @{
  *
@@ -119,11 +124,6 @@ extern "C" {
 #define QPL_FLAG_RND_ACCESS 0x0200u
 
 /**
- * For partial decompression: to parse header and in case of random (mini-block) access, see  the previous line
- */
-#define QPL_FLAG_NO_BUFFERING 0x0400u
-
-/**
  * All processed data should be written to output, otherwise, only complete qwords
  */
 #define QPL_FLAG_DECOMP_FLUSH_ALWAYS 0x0800u
@@ -148,6 +148,11 @@ extern "C" {
  * Compression only: generate only literals
  */
 #define QPL_FLAG_GEN_LITERALS 0x8000u
+
+/**
+ * Flag to enable canned compression and decompression
+ */
+#define QPL_FLAG_CANNED_MODE 0x00400000u
 
 /* CRC64 flags */
 /**
@@ -181,13 +186,10 @@ extern "C" {
  */
 #define QPL_FLAG_OMIT_AGGREGATES 0x00200000u
 
-/**
- * Add description
- */
-#define QPL_FLAG_CANNED_MODE 0x00400000u
 /** @} */
 
 /**
+ * @enum qpl_path_t
  * @brief Enum of the executing paths
  */
 typedef enum {
@@ -200,7 +202,7 @@ typedef enum {
  * @brief Enum of all output formats
  */
 typedef enum {
-    qpl_ow_nom = 0u,    /**< Output 1-bit stream  */
+    qpl_ow_nom = 0u,    /**< Output stream in its nominal format without modification*/
     qpl_ow_8   = 1u,    /**< Output 8-bit stream  */
     qpl_ow_16  = 2u,    /**< Output 16-bit stream */
     qpl_ow_32  = 3u     /**< Output 32-bit stream */
@@ -221,23 +223,15 @@ typedef enum {
 typedef enum {
     qpl_op_decompress = 0x00u,    /**< Performs Inflate operation (@ref DEFLATE_OPERATIONS group) */
     qpl_op_compress   = 0x01u,    /**< Performs Deflate operation (@ref DEFLATE_OPERATIONS group) */
-    qpl_op_memcpy     = 0x04u,    /**< Performs @ref COPY_OPERATION */
-    qpl_op_crc64      = 0x05u,    /**< Performs @ref CRC_OPERATION */
 
-    qpl_op_z_decompress32 = 0x08u,    /**< Performs Zero-decompress-32 operation (@ref ZCOMPRESS_OPERATIONS group) */
-    qpl_op_z_decompress16 = 0x09u,    /**< Performs Zero-decompress-16 operation (@ref ZCOMPRESS_OPERATIONS group) */
-    qpl_op_z_compress32   = 0x0Cu,    /**< Performs Zero-compress-32 operation (@ref ZCOMPRESS_OPERATIONS group) */
-    qpl_op_z_compress16   = 0x0Du,    /**< Performs Zero-compress-16 operation (@ref ZCOMPRESS_OPERATIONS group) */
+    qpl_op_crc64      = 0x05u,    /**< Performs @ref CRC_OPERATION */
 
     // start filter operations
     /**
      * Affiliation to boolean histogram filter operation (@ref ANALYTIC_OPERATIONS group)
      */
-    qpl_op_set_membership = 0x10u,
     qpl_op_extract        = 0x11u,  /**< Extract sub-vector filter operation (@ref ANALYTIC_OPERATIONS group) */
     qpl_op_select         = 0x12u,  /**< Down-sampling filter operation (@ref ANALYTIC_OPERATIONS group) */
-    qpl_op_rle_burst      = 0x13u,  /**< RLE decompression filter operation (@ref ANALYTIC_OPERATIONS group) */
-    qpl_op_find_unique    = 0x14u,  /**< Boolean histogram filter operation (@ref ANALYTIC_OPERATIONS group) */
     qpl_op_expand         = 0x15u,  /**< Up-sampling filter operation (@ref ANALYTIC_OPERATIONS group) */
 
     // start filter scan operations

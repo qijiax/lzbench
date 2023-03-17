@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget Qpl::qpl Qpl::qplhl)
+foreach(_expectedTarget QPL::qpl)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -50,19 +50,13 @@ if(_IMPORT_PREFIX STREQUAL "/")
   set(_IMPORT_PREFIX "")
 endif()
 
-# Create imported target Qpl::qpl
-add_library(Qpl::qpl STATIC IMPORTED)
+# Create imported target QPL::qpl
+add_library(QPL::qpl STATIC IMPORTED)
 
-set_target_properties(Qpl::qpl PROPERTIES
-  INTERFACE_COMPILE_DEFINITIONS "QPL_LIB;QPL_BADARG_CHECK;\$<\$<C_COMPILER_ID:MSVC>:_ENABLE_EXTENDED_ALIGNED_STORAGE>"
+set_target_properties(QPL::qpl PROPERTIES
+  INTERFACE_COMPILE_DEFINITIONS "QPL_LIB;QPL_BADARG_CHECK;\$<\$<C_COMPILER_ID:MSVC>:_ENABLE_EXTENDED_ALIGNED_STORAGE>;\$<\$<BOOL:ON>:DYNAMIC_LOADING_LIBACCEL_CONFIG>"
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
   INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:dl>"
-)
-
-# Create imported target Qpl::qplhl
-add_library(Qpl::qplhl STATIC IMPORTED)
-
-set_target_properties(Qpl::qplhl PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:Qpl::qpl>"
 )
 
 if(CMAKE_VERSION VERSION_LESS 2.8.12)
@@ -71,7 +65,7 @@ endif()
 
 # Load information for each installed configuration.
 get_filename_component(_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-file(GLOB CONFIG_FILES "${_DIR}/QplTargets-*.cmake")
+file(GLOB CONFIG_FILES "${_DIR}/QPLTargets-*.cmake")
 foreach(f ${CONFIG_FILES})
   include(${f})
 endforeach()

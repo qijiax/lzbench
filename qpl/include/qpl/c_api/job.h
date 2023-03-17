@@ -94,14 +94,12 @@ typedef struct {
     qpl_out_format out_bit_width;
 
     /**
-     * Low parameter for operations extract or scan, or a number of low-order bits to ignore for set_membership
-     * or find_unique
+     * Low parameter for operations extract or scan
      */
     uint32_t param_low;
 
     /**
-     * High parameter for operations extract or scan, or a number of high-order bits to ignore for set_membership
-     * or find_unique
+     * High parameter for operations extract or scan
      */
     uint32_t param_high;
 
@@ -159,21 +157,15 @@ typedef struct {
 QPL_API(qpl_status, qpl_get_job_size, (qpl_path_t qpl_path, uint32_t * job_size_ptr))
 
 /**
- * @brief Initializes the qpl_job structure.
+ * @brief Initializes the qpl_job structure and ensures proper alignment of internal structures.
+ * This API should be called only once, after a new @ref qpl_job object is allocated.
  *
  * @param[in]      qpl_path     type of implementation path to use - @ref qpl_path_auto,
  *                              @ref qpl_path_hardware or @ref qpl_path_software
  * @param[in,out]  qpl_job_ptr  a pointer to the @ref qpl_job structure
  *
  * @warning Memory for qpl_job structure must be allocated at the application side. Size (in bytes)
- * must be obtained with the @ref qpl_get_job_size function and then type-casted to @ref qpl_job :
- *
- * @code
- *  uint32_t  size;
- *  qpl_job *qpl_job_ptr;
- *  status = qpl_get_job_size(&size);
- *  qpl_job_ptr = (qpl_job*)malloc(size);
- * @endcode
+ * must be obtained with the @ref qpl_get_job_size function.
  *
  * @note qpl_job is an alias to the @ref qpl_job structure - must contain additional internal memory buffers for
  * SW path of compression/decompression/etc.

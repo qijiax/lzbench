@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include "qpl_compress.h"
 #include "qpl/qpl.h"
-#include "qpl/qpl.hpp"
+#include <sys/time.h>
 
 // #define QPL_SUBMIT
 
@@ -137,56 +137,3 @@ void qpl_deinit(char* workmem) {
 
 uint32_t op_len = 0;
 
-int64_t qpl_hl_compress(char *inbuf, size_t insize, char *outbuf, size_t outsize, size_t level, size_t path, char* workmem) {
-
-    qpl::deflate_operation* deflate_operation = (qpl::deflate_operation*)workmem;
-
-    const auto compressed_result = qpl::execute<qpl::hardware>(*deflate_operation,
-                                                            (uint8_t *)inbuf,
-                                                            (uint8_t *)(inbuf + insize),
-                                                            (uint8_t *)outbuf,
-                                                            (uint8_t *)(outbuf + outsize));
-    compressed_result.handle([](uint32_t value) -> void {
-                                op_len = value;
-                            },
-                            [](uint32_t status_code) -> void {
-                                throw std::runtime_error("Error while compression occurred. Code: " + std::to_string(status_code));
-                            });
-
-    return op_len;
-}
-int64_t qpl_hl_decompress(char *inbuf, size_t insize, char *outbuf, size_t outsize, size_t level, size_t path, char* workmem) {
-
-    auto inflate_operation = qpl::inflate_operation();
-
-    const auto compressed_result = qpl::execute<qpl::hardware>(inflate_operation,
-                                                            (uint8_t *)inbuf,
-                                                            (uint8_t *)(inbuf + insize),
-                                                            (uint8_t *)outbuf,
-                                                            (uint8_t *)(outbuf + outsize));
-    compressed_result.handle([](uint32_t value) -> void {
-                                op_len = value;
-                            },
-                            [](uint32_t status_code) -> void {
-                                throw std::runtime_error("Error while decompression occurred. Code:" + std::to_string(status_code));
-                            });
-
-    return op_len;
-}
-char* qpl_hl_init(size_t insize, size_t level, size_t path)
-{
-    qpl::deflate_operation *workmem = (qpl::deflate_operation *)malloc(sizeof(qpl::deflate_operation));
-    *workmem = qpl::deflate_operation::builder()
-        .compression_level(qpl::compression_levels::default_level)
-        .compression_mode<qpl::compression_modes::dynamic_mode>()
-        .gzip_mode(false)
-        .build();
-
-    return (char *)workmem;
-}
-void qpl_hl_deinit(char* workmem) {
-    if (!workmem) return;
-    free(workmem);
-
-    return;
-}
