@@ -214,8 +214,8 @@ static const compressor_desc_t comp_desc[LZBENCH_COMPRESSOR_COUNT] =
     { "nakamichi",  "okamigan",    0,   0,    0,       0, lzbench_nakamichi_compress,  lzbench_nakamichi_decompress,  NULL,                    NULL },
     { "cudaMemcpy", "",            0,   0,    0,       0, lzbench_cuda_return_0,       lzbench_cuda_memcpy,           lzbench_cuda_init,       lzbench_cuda_deinit },
     { "nvcomp_lz4", "1.2.2",       0,   5,    0,       0, lzbench_nvcomp_compress,     lzbench_nvcomp_decompress,     lzbench_nvcomp_init,     lzbench_nvcomp_deinit },
-    { "qpl",        "0.0.0",       0,   0,    1,   1<<20, lzbench_qpl_compress,        lzbench_qpl_decompress,        lzbench_qpl_init,        lzbench_qpl_deinit },
-    { "qpl_sw",     "0.0.0",       0,   0,    2,       0, lzbench_qpl_compress,        lzbench_qpl_decompress,        lzbench_qpl_init,        lzbench_qpl_deinit },
+    { "qpl",        "v1.1.0",       0,   0,    1,   1<<20, lzbench_qpl_compress,        lzbench_qpl_decompress,        lzbench_qpl_init,        lzbench_qpl_deinit },
+    { "qpl_sw",     "v1.1.0",       0,   0,    2,       0, lzbench_qpl_compress,        lzbench_qpl_decompress,        lzbench_qpl_init,        lzbench_qpl_deinit },
 };
 
 
